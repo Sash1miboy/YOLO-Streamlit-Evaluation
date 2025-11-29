@@ -1,4 +1,4 @@
-# Analisis Performa YOLO
+# Analisis Performa YOLO Untuk Emotions Detections Pada Wajah Manusia
 
 Dashboard Streamlit untuk visualisasi dan analisis performa berbagai model YOLO (YOLOv8–YOLOv12).
 
