@@ -1,6 +1,7 @@
 import streamlit as st
 from utils.filter import table_filter
 from table.yolo_tabel import accuracy_table, efficiency_table, class_emotions_table
+from utils.download_data import download_to_excel
 
 
 def table_sections(overall_data, all_class_data):
@@ -20,6 +21,15 @@ def table_sections(overall_data, all_class_data):
 
     st.subheader("Tabel Akurasi Model")
     accuracy_table(sorted_accuracy_data)
+    
+    excel_data = download_to_excel(sorted_accuracy_data)
+    
+    st.download_button(
+        label="📥 Download Excel",
+        data=excel_data,
+        file_name="accuracy_yolo_comparison_data.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
 
     st.divider()
 
@@ -42,6 +52,15 @@ def table_sections(overall_data, all_class_data):
 
     st.subheader("Tabel Efisiensi Model")
     efficiency_table(sorted_efficiency_data)
+    
+    excel_data = download_to_excel(sorted_efficiency_data)
+    
+    st.download_button(
+        label="📥 Download Excel",
+        data=excel_data,
+        file_name="efficiency_yolo_comparison_data.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
 
     st.divider()
 
@@ -91,3 +110,12 @@ def table_sections(overall_data, all_class_data):
 
     st.subheader("Tabel mAP50 per Kelas Emosi")
     class_emotions_table(sorted_all_class_data)
+    
+    excel_data = download_to_excel(sorted_all_class_data)
+    
+    st.download_button(
+        label="📥 Download Excel",
+        data=excel_data,
+        file_name="class_yolo_comparison_data.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
