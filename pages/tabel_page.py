@@ -38,8 +38,6 @@ def table_sections(overall_data, all_class_data):
             "Index",
             "Model",
             "Size",
-            "Parameters (M)",
-            "GFLOPs",
             "Preprocessing (ms)",
             "Inference (ms)",
             "Postprocessing (ms)",

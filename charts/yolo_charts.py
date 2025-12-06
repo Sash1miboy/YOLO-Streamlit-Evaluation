@@ -188,7 +188,7 @@ def robustness_heatmap(class_data: pd.DataFrame, metric: str):
     }
 
     model_list = list(model_order.values())
-    
+
     if metric == "Default":
         metric = "mAP50"
 
@@ -207,13 +207,82 @@ def robustness_heatmap(class_data: pd.DataFrame, metric: str):
         x=heatmap_data.columns,
         y=heatmap_data.index,
         color_continuous_scale="RdYlGn",
-        text_auto=".4f",  # type: ignore
         aspect="auto",
-    )
+    ).update_traces(texttemplate="%{z:.4f}")
 
     fig.update_layout(
         height=50 * len(existing_models_sorted),
         font=dict(size=13),
+    )
+
+    st.plotly_chart(fig, width="stretch")
+
+
+def training_curve(data: pd.DataFrame, metric):
+    model_order = {
+        1: "YOLOv8n",
+        2: "YOLOv8s",
+        3: "YOLOv8m",
+        4: "YOLOv8l",
+        5: "YOLOv9t",
+        6: "YOLOv9s",
+        7: "YOLOv9m",
+        8: "YOLOv9c",
+        9: "YOLOv10n",
+        10: "YOLOv10s",
+        11: "YOLOv10m",
+        12: "YOLOv10l",
+        13: "YOLOv11n",
+        14: "YOLOv11s",
+        15: "YOLOv11m",
+        16: "YOLOv11l",
+        17: "YOLOv12n",
+        18: "YOLOv12s",
+        19: "YOLOv12m",
+        20: "YOLOv12l",
+    }
+
+    ordered_models = []
+    for m in model_order.values():
+        ordered_models.append(m.lower())
+
+    fig = px.line(
+        data,
+        x="epoch",
+        y=metric,
+        color="Model",
+        markers=False,
+        height=600,
+        category_orders={"Model": ordered_models},
+    )
+
+    max_val = data[metric].max()
+    y_max = max_val * 1.10
+
+    fig.update_layout(
+        xaxis_title="Epoch",
+        yaxis_title=metric.replace("_", " ").title(),
+        font=dict(size=13),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="center",
+            x=0.5,
+            font=dict(size=13),
+        ),
+        hovermode="x unified",
+    )
+
+    fig.update_yaxes(range=[0, y_max])
+
+    fig.update_traces(
+        line=dict(width=2),
+        hovertemplate=(
+            "<b>Model:</b> %{fullData.name}<br>"
+            "<b>Epoch:</b> %{x}<br>"
+            f"<b>{metric}:</b> " + "%{y:.4f}<extra></extra>"
+        ),
     )
 
     st.plotly_chart(fig, width="stretch")

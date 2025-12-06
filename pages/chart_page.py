@@ -6,6 +6,7 @@ from charts.yolo_charts import (
     tradeoff_scatter_chart,
     training_time_chart,
     robustness_heatmap,
+    training_curve,
 )
 from utils.filter import (
     chart_filter_options,
@@ -13,6 +14,7 @@ from utils.filter import (
     filter_and_sort_heatmap_data,
 )
 from utils.time_converter import hhmmss_to_minutes
+from utils.load_data import load_training_logs
 
 
 def chart_sections(overall_data: pd.DataFrame, class_data: pd.DataFrame):
@@ -63,7 +65,7 @@ def chart_sections(overall_data: pd.DataFrame, class_data: pd.DataFrame):
         hhmmss_to_minutes
     )
 
-    st.subheader("Waktu Pelatihan Model YOLO")
+    st.subheader("Waktu Pelatihan Model YOLO (Menit)")
     training_data = filter_and_sort_training_data(training_data)
     training_time_chart(training_data)
 
@@ -72,3 +74,69 @@ def chart_sections(overall_data: pd.DataFrame, class_data: pd.DataFrame):
     st.subheader("Heat Map Ketangguhan (Robustness) Model YOLO")
     class_data, metrics = filter_and_sort_heatmap_data(class_data)
     robustness_heatmap(class_data, metrics)
+
+    st.divider()
+
+    training_logs = load_training_logs()
+    if training_logs is None:
+        st.write("Error: no training logs data!")
+        st.stop()
+
+    ignore_cols = ["epoch", "Model", "Variant_Group", "time"]
+    metric_options = []
+    for i in training_logs.columns:
+        if i not in ignore_cols:
+            metric_options.append(i)
+
+    st.subheader("Chart Kurva Pelatihan Model YOLO")
+    
+    variant_options = [
+        "Nano & Tiny (n/t)",
+        "Small (s)",
+        "Medium (m)",
+        "Large & Compact (l/c)",
+    ]
+
+    k1, k2, k3 = st.columns(3)
+
+    with k1:
+        filter_mode = st.selectbox(
+            "Filter berdasarkan:",
+            ["Variant Group", "Model Family"],
+            key="filter_mode",
+        )
+
+    active_column = "Variant_Group"
+
+    with k2:
+        if filter_mode == "Variant Group":
+            selected_filter = st.selectbox(
+                "Pilih Variant Group:",
+                variant_options,
+                key="variant_group_filter",
+            )
+            active_column = "Variant_Group"
+
+        else:
+            training_logs["Family"] = training_logs["Model"].str.extract(
+                r"(yolov\d+)", expand=False
+            )
+
+            family_options = sorted(training_logs["Family"].unique())
+
+            selected_filter = st.selectbox(
+                "Pilih Model Family:",
+                family_options,
+                key="family_filter",
+            )
+            active_column = "Family"
+
+    with k3:
+        selected_metric = st.selectbox(
+            "Pilih Metrik:", metric_options, key="metric_selection"
+        )
+
+    filtered_data = training_logs[training_logs[active_column] == selected_filter]
+
+    st.subheader(f"Kurva Pelatihan untuk {selected_filter}")
+    training_curve(filtered_data, selected_metric)
