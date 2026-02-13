@@ -1,6 +1,7 @@
 import streamlit as st
 
 from reports.chart_page import chart_sections
+from reports.demo_page import demo_page
 from reports.tabel_page import table_sections
 from utils.download_data import download_to_excel
 from utils.load_data import load_logo, load_main_data
@@ -22,12 +23,14 @@ dataset = st.sidebar.selectbox(
 )
 
 # page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart", "🧪 Demo"])
-page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart"])
+page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart", "🧪 Demo"])
 
 if dataset == "Human Face Emotions Computer Vision Model":
     dataset = "human-face-emotion-computer-vision-model"
+    bestpt = "best-YOLOv11s-Roboflow.pt"
 elif dataset == "FER2013":
     dataset = "fer-2013"
+    bestpt = "Unavaible"
 
 overall_data, all_class_data = load_main_data(dataset)
 
@@ -53,6 +56,8 @@ if page == "📊 Tabel":
 
 elif page == "📈 Chart":
     chart_sections(overall_data, all_class_data, dataset)
+elif page == "🧪 Demo":
+    demo_page(bestpt)
 
 # elif page == "🧪 Demo":
 #     st.write("Ini halaman Demo")
