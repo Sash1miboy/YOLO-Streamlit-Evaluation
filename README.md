@@ -44,8 +44,5 @@ Aplikasi akan terbuka di browser. Gunakan sidebar untuk navigasi halaman:
 - Semua chart sudah mendukung filter model dan sorting untuk analisis lebih fleksibel.
 
 ## TODO
-
-- Tambahkan Chart Training Curve dari Semua Model (Dipisah dengan ukuran model)
-- Develop Page Demo
-- Membuat fitur untuk download data dalam bentuk excel/csv
+- Tambahkan Halaman Untuk Dataset AffectNet
 - Enhance UI/UX
