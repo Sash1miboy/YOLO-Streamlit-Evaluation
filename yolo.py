@@ -22,15 +22,14 @@ dataset = st.sidebar.selectbox(
     "Pilih Dataset:", ["Human Face Emotions Computer Vision Model", "FER2013"]
 )
 
-# page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart", "🧪 Demo"])
 page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart", "🧪 Demo"])
 
 if dataset == "Human Face Emotions Computer Vision Model":
     dataset = "human-face-emotion-computer-vision-model"
-    bestpt = "best-YOLOv11s-Roboflow.pt"
+    bestpt = "HFECVM-YOLOv11s-Best-Overall"
 elif dataset == "FER2013":
     dataset = "fer-2013"
-    bestpt = "Unavaible"
+    bestpt = "FER2013-YOLOv10s-Best-Overall"
 
 overall_data, all_class_data = load_main_data(dataset)
 
@@ -50,14 +49,11 @@ st.download_button(
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 )
 
-
 if page == "📊 Tabel":
     table_sections(overall_data, all_class_data, dataset)
 
 elif page == "📈 Chart":
     chart_sections(overall_data, all_class_data, dataset)
-elif page == "🧪 Demo":
-    demo_page(bestpt)
 
-# elif page == "🧪 Demo":
-#     st.write("Ini halaman Demo")
+elif page == "🧪 Demo":
+    demo_page(bestpt)  # type: ignore

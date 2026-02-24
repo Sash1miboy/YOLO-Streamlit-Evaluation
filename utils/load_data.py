@@ -3,6 +3,7 @@ from typing import Optional
 
 import pandas as pd
 import streamlit as st
+from ultralytics import YOLO
 
 
 @st.cache_data
@@ -82,6 +83,13 @@ def get_variant_group(model_name: str):
         return "Large & Compact (l/c)"
     else:
         return "Lainnya"
-        return "Lainnya"
-        return "Lainnya"
-        return "Lainnya"
+
+
+@st.cache_resource
+def load_yolo_model(model_name: str):
+    base_dir = Path(__file__).resolve().parent.parent
+    model_path = base_dir / "models" / f"{model_name}.onnx"
+
+    model = YOLO(model_path)
+
+    return model
