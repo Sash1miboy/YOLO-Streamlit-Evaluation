@@ -88,7 +88,7 @@ def get_variant_group(model_name: str):
 @st.cache_resource
 def load_yolo_model(model_name: str):
     base_dir = Path(__file__).resolve().parent.parent
-    model_path = base_dir / "models" / f"{model_name}.onnx"
+    model_path = base_dir / "models" / f"{model_name}.pt"
 
     model = YOLO(model_path)
 

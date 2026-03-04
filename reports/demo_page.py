@@ -35,7 +35,7 @@ def demo_page(model_name: str):
                 st.error("Failed to access webcam.")
                 break
 
-            results = model(frame)
+            results = model(frame, imgsz=736, conf=0.25)
             annotated_frame = results[0].plot()
 
             live_frame_window.image(annotated_frame, channels="BGR", width="stretch")

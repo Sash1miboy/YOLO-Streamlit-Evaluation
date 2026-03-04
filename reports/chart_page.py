@@ -129,6 +129,14 @@ def chart_sections(overall_data: pd.DataFrame, class_data: pd.DataFrame, dataset
             "yolov11s",
             "yolov12m",
         ]
+    elif dataset == "affectNet":
+        best_ver = [
+            "yolov8s",
+            "yolov9c",
+            "yolov10m",
+            "yolov11m",
+            "yolov12s",
+        ]
 
     best_ver_per_family = [
         "All",
@@ -206,6 +214,18 @@ def chart_sections(overall_data: pd.DataFrame, class_data: pd.DataFrame, dataset
                         "yolov10s",
                         "yolov11s",
                         "yolov12m",
+                    ]
+                )
+            ]
+        elif dataset == "affectNet":
+            filtered_data = training_logs[
+                training_logs[active_column].isin(
+                    [
+                        "yolov8s",
+                        "yolov9c",
+                        "yolov10m",
+                        "yolov11m",
+                        "yolov12s",
                     ]
                 )
             ]

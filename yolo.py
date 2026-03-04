@@ -19,7 +19,8 @@ logo_path = load_logo()
 st.sidebar.image(str(logo_path), width=250)
 
 dataset = st.sidebar.selectbox(
-    "Pilih Dataset:", ["Human Face Emotions Computer Vision Model", "FER2013"]
+    "Pilih Dataset:",
+    ["Human Face Emotions Computer Vision Model", "FER2013", "AffectNet"],
 )
 
 page = st.sidebar.selectbox("Pilih Halaman:", ["📊 Tabel", "📈 Chart", "🧪 Demo"])
@@ -30,6 +31,9 @@ if dataset == "Human Face Emotions Computer Vision Model":
 elif dataset == "FER2013":
     dataset = "fer-2013"
     bestpt = "FER2013-YOLOv10s-Best-Overall"
+elif dataset == "AffectNet":
+    dataset = "affectNet"
+    bestpt = "AffectNet-YOLOv10s-Best-Overall"
 
 overall_data, all_class_data = load_main_data(dataset)
 
