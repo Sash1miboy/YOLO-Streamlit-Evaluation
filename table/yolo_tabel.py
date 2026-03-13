@@ -128,6 +128,17 @@ def class_emotions_table(data, dataset):
         ]
     elif dataset == "fer-2013":
         cols = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
+    elif dataset == "affectNet":
+        cols = [
+            "Anger",
+            "Contempt",
+            "Disgust",
+            "Fear",
+            "Happy",
+            "Neutral",
+            "Sad",
+            "Surprise",
+        ]
 
     display = data.copy()
 
